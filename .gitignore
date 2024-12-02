@@ -1,0 +1,6 @@
+venv/
+db.sqlite3
+staticfiles/
+.prettierignore
+.env
+dbbk.sqlite3
