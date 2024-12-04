@@ -1,0 +1,22 @@
+nav{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background: rgba(255, 255, 197, 0.795);
+    margin-bottom: 10px;
+}
+
+nav img{
+    width: 250px;
+    margin: 5px;
+    
+}
+
+
+/* .container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+} */

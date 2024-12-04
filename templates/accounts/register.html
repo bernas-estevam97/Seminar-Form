@@ -1,7 +1,36 @@
-<h3>Register</h3>
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <title>PhD Seminar Form CB - Register</title>
+</head>
+<body>
+
+<nav>
+    <img src="{% static 'img/ualg-logo.png' %}">
+    <h1>Biomedical Sciences PhD Seminar Form Filling</h1>
+</nav>
+    
+<div class="container">
+<h3>Registration</h3>
+
 
 <form method="POST">
     {% csrf_token %}
     {{form}}
-    <button type="submit">Register</button>
+    <button type="submit">Submit</button>
 </form>
+    <div>Already have an account?</div>
+    <a href="{% url 'login' %}">Login</a>
+</div>
+
+
+
+<script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
