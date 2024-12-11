@@ -6,26 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/auth.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/worksheet.ico' %}">
     <title>PhD Seminar Form CB - Login</title>
 </head>
 <body>
 
 <nav>
     <img src="{% static 'img/ualg-logo.png' %}">
-    <h1>Biomedical Sciences PhD Seminar Form Filling</h1>
+    <h1>Biomedical Sciences PhD Seminar Form Filling <img style="width: 100px; height: auto" src="{% static 'img/worksheet.png' %}"></h1>
 </nav>
     
 <div class="container">
 <h3>Login Page</h3>
 
-
-<form method="POST">
-    {% csrf_token %}
-    {{form}}
-    <button type="submit">Submit</button>
-</form>
-    <div>You dont have an account?</div>
-    <a href="{% url 'register' %}">Register</a>
+   
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card bg-dark text-white" style="border-radius: 1rem;">
+              <div class="card-body p-5 text-center">
+    
+                <div class="mb-md-5 mt-md-4">
+                  <form action="" method="POST">
+                  {% csrf_token %}
+                  <h3>Seminar form filling Login</h3>
+                  
+                 <br><br><h2 class="fw-bold mb-2 text-uppercase">APP Login</h2>
+                  <p class="text-white-50 mb-5">Please enter your given login credentials<br>(Private version)</p>
+                  <div class="form-outline form-white mb-4">
+                    <input type="user" id="username" class="form-control form-control-lg" name="username" required="">
+                    <label class="form-label" for="username">User</label>
+                  </div>
+    
+                  <div class="form-outline form-white mb-4">
+                    <input type="password" id="password" class="form-control form-control-lg" name="password" required="">
+                    <label class="form-label" for="password">Password</label>
+                  </div>
+    
+                  <button class="btn btn-outline-info px-5" data-mdb-ripple-color="dark" type="submit">Login</button><br><br>
+                  
+                  </form>
+                  <div>You dont have an account?</div>
+                <a href="{% url 'register' %}">Register</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 </div>
 
 

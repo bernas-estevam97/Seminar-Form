@@ -40,9 +40,9 @@ def login_user(request: HttpRequest):
                     messages.error(request, (f"Invalid login. {attempts} of {settings.MAX_FAILED_LOGIN_ATTEMPTS} attempts left"))
                     #cache._cache.keys() cache._cache.values()
                     # print(cache._cache.keys())
-                    return render(request, 'authenticate/login.html', {})
+                    return render(request, 'accounts/login.html', {})
     else:
-        return render(request, 'authenticate/login.html', {})
+        return render(request, 'accounts/login.html', {})
 
 
 def get_client_ip(request):
@@ -53,10 +53,10 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
-def login_page(request):
-    form = UserCreationForm()
-    context = {'form':form}
-    return render(request, 'accounts/login.html', context)
+# def login_page(request):
+#     form = UserCreationForm()
+#     context = {'form':form}
+#     return render(request, 'accounts/login.html', context)
 
 
 def logout_user(request):

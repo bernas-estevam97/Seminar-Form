@@ -22,10 +22,13 @@ from web_app.views import *
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('access_adm_obliviouz/', admin.site.urls),
     path('', home_page, name='home'),
     path('authenticate/', include('django.contrib.auth.urls')),
     path('authenticate/', include('accounts.urls')),
+    path('add-form', seminar_form_req),
+    path('form-list', all_seminars, name="full-list"),
+    path('generate_report', generate_report, name="generate_report")
 ]+ static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)
 

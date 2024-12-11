@@ -1,11 +1,70 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/worksheet.ico' %}">
+    <title>PhD Seminar Form CB - Form Filling</title>
 </head>
 <body>
-    
+
+<nav>
+    <img src="{% static 'img/ualg-logo.png' %}">
+    <h1>Biomedical Sciences PhD Seminar Form Filling <img style="width: 100px; height: auto" src="{% static 'img/worksheet.png' %}"></h1>
+</nav>
+<div class="login-info"><div>Welcome! You are logged in as <b><u>{{ user.get_username }}</u></b></div><a class="logout-button" href="{% url 'logout' %}">Logout</a></div>
+
+<div class="form-container">
+<form action="add-form" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>Seminar title:</p>
+    {{form.seminar_title}}
+    <p>Seminar Speaker:</p>
+    {{form.seminar_speaker}}
+    <p>Seminar Date:</p>
+    {{form.seminar_date}}
+    <button type="submit" class="btn btn-primary mt-2">Submit</button>
+</form>
+{% if main_page %}
+
+{% elif submitted %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Your seminar form was submitted successfully!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>  
+{% else %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Something went wrong with your form submission try again.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% endif %}
+<!-- <button action="" class="btn btn-primary" id="toggleBtn"><span id="toggleFunc">View</span> seminar list for {{user.get_username }}</button> -->
+<a href="{% url 'full-list' %}" class="btn btn-primary">View seminar list for {{user.get_username }}</a>
+<!-- <div class="table-view"> -->
+{% for k in data  %}
+<table border="1" class="table-view hidden">
+    <thead>
+        <th>Seminar Title</th>
+        <th>Seminar Speaker</th>
+        <th>Seminar Date</th>
+    </thead>
+    <tr>
+        <td>{{k.seminar_title}}</td>
+        <td>{{k.seminar_speaker}}</td>
+        <td>{{k.seminar_date}}</td>
+    </tr> 
+</table>
+{% endfor %}
+<!-- </div> -->
+<button action="" onclick="" class="btn btn-success">Generate report for {{user.get_username }}</button>
+</div>
+
+<script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.modal.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<!-- <script type="text/javascript" src="{% static 'js/toggle-list.js' %}"></script> -->
 </body>
 </html>

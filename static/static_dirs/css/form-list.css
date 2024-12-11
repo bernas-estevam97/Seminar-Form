@@ -11,6 +11,16 @@ nav img{
     margin: 5px;
 }
 
+
+.full-container{
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 5px;
+}
 .login-info{
     position: relative;
     border: 2px solid black;
@@ -34,12 +44,12 @@ nav img{
     border: 2px solid rgb(168, 30, 30);
   }
   
-  .logout-button:hover {
+ .login-info .logout-button:hover {
     background: rgb(168, 30, 30);
     color: white !important;
   }
 
-.form-container{
+.container{
     margin-top: 100px;
     display: flex;
     flex-direction: column;
@@ -49,22 +59,10 @@ nav img{
     gap: 5px;
 }
 
-.form-control{
-    width: 1000px !important;
-    margin-bottom: 10px !important;
-}
-
-
 .table-view{
-    width:50%;
+    width:80%;
 }
 
 .table-view thead th, .table-view tr td{
     border: 2px solid black;
-}
-
-
-
-.hidden{
-    display: none;
 }

@@ -52,16 +52,48 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'web_app.middleware.IPLockMiddleware',
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STORAGES = {
-    # ...
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        'OPTIONS': {
+            'location': MEDIA_ROOT,
+        },
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
+#CACHE EXAMPLE USING DATABASE CACHE
+
+# Django can store its cached data in your database. This works best if you’ve got a fast, well-indexed database server.
+
+#To use a database table as your cache backend:
+
+#Set BACKEND to django.core.cache.backends.db.DatabaseCache
+#Set LOCATION to tablename, the name of the database table. This name can be whatever you want, as long as it’s a valid table name that’s not already being used in your database.
+#In this example, the cache table’s name is my_cache_table:
+
+# CREATE CACHE TABLE ----> python manage.py createcachetable
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cache_table",
+	"TIMEOUT": None,
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
+MAX_FAILED_LOGIN_ATTEMPTS = 3
+FAILED_LOGIN_LOCK_DURATION = 14400  # 1 hour is 3600s. Currently set to 30 seconds only for testing purposes, change in prod 
 
 ROOT_URLCONF = 'web_app.urls'
 
@@ -139,8 +171,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 #STATICFILES_DIRS = (
 #    os.path.join(BASE_DIR, 'static', 'static_dirs'),
 #)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

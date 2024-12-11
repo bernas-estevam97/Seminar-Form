@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/form-list.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/worksheet.ico' %}">
+    <title>PhD Seminar Form CB - Form Filling</title>
+</head>
+<body>
+
+<nav>
+    <img src="{% static 'img/ualg-logo.png' %}">
+    <h1>Biomedical Sciences PhD Seminar Form Filling <img style="width: 100px; height: auto" src="{% static 'img/worksheet.png' %}"></h1>
+</nav>
+<div class="login-info"><div>Welcome! You are logged in as <b><u>{{ user.get_username }}</u></b></div><a class="logout-button" href="{% url 'logout' %}">Logout</a></div>
+<div class="full-container">
+
+
+
+<h1><u>All {{ user.get_username }} seminars</u></h1>
+
+<!-- <div class="table-view"> -->
+<div class="container">  
+<table border="1" class="table-view">
+    <thead>
+        <th>Seminar Title</th>
+        <th>Seminar Speaker</th>
+        <th>Seminar Date</th>
+    </thead>
+    {% for k in data  %}
+    <tr> 
+        <td>{{k.seminar_title}}</td>
+        <td>{{k.seminar_speaker}}</td>
+        <td>{{k.seminar_date}}</td>
+    </tr> 
+    {% endfor %}
+</table>
+
+<!-- </div> -->
+<a href="{% url 'home' %}" class="btn btn-info">Submit a new seminar</a>
+<form action="{% url 'generate_report' %}" method="GET">
+    <button action="{% url 'generate_report' %}" type="submit" class="btn btn-success">Generate report for {{user.get_username }}</button>
+</form>
+{% if report_generated %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Your report was generated! Downloading...
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div> 
+ {% endif %} 
+</div>
+</div>
+
+<script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.modal.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
