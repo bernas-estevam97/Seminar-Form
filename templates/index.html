@@ -42,24 +42,9 @@
   </div>
 {% endif %}
 <!-- <button action="" class="btn btn-primary" id="toggleBtn"><span id="toggleFunc">View</span> seminar list for {{user.get_username }}</button> -->
-<a href="{% url 'full-list' %}" class="btn btn-primary">View seminar list for {{user.get_username }}</a>
-<!-- <div class="table-view"> -->
-{% for k in data  %}
-<table border="1" class="table-view hidden">
-    <thead>
-        <th>Seminar Title</th>
-        <th>Seminar Speaker</th>
-        <th>Seminar Date</th>
-    </thead>
-    <tr>
-        <td>{{k.seminar_title}}</td>
-        <td>{{k.seminar_speaker}}</td>
-        <td>{{k.seminar_date}}</td>
-    </tr> 
-</table>
-{% endfor %}
+<a href="{% url 'full-list' %}" class="btn btn-success">View seminar list for {{user.get_username }}</a>
 <!-- </div> -->
-<button action="" onclick="" class="btn btn-success">Generate report for {{user.get_username }}</button>
+<!-- <button action="" onclick="" class="btn btn-success">Generate report for {{user.get_username }}</button> -->
 </div>
 
 <script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>

@@ -53,18 +53,3 @@ nav img{
     width: 1000px !important;
     margin-bottom: 10px !important;
 }
-
-
-.table-view{
-    width:50%;
-}
-
-.table-view thead th, .table-view tr td{
-    border: 2px solid black;
-}
-
-
-
-.hidden{
-    display: none;
-}

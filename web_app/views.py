@@ -10,7 +10,10 @@ from docx import Document
 import sqlite3
 import os
 from django.core.files.base import ContentFile
-
+from docx.enum.style import WD_STYLE_TYPE
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from datetime import date
 
 @login_required(login_url=settings.LOGIN_URL)
 def home_page(request):
@@ -54,59 +57,85 @@ def all_seminars(request):
      return render(request, 'form-list.html',  {'data': data})
 
 
+# Generate report in word (it doesn't work as intended - python-docx isn't great :)
+
+# def generate_report(request):
+#      data = SeminarFormModel.objects.filter(user=request.user)
+#      report_generated=False
+#      user=request.user
+#      # Step 1: Connect to SQLite database and retrieve data
+#      db_path = r"C:\Users\berna\Desktop\Coding projects\Python Projects\seminar_form\db.sqlite3"  # Path to your SQLite database
+#      query = "SELECT seminar_title, seminar_speaker, seminar_date FROM web_app_seminarformmodel WHERE user_id="+str(user.id)  # Replace with your query
+#      conn = sqlite3.connect(db_path)
+#      cursor = conn.cursor()
+#      cursor.execute(query)
+
+#      # Fetch all rows and column names
+#      rows = cursor.fetchall()
+#      columns = [description[0] for description in cursor.description]
+
+#      # Close the database connection
+#      conn.close()
+#      doc_path=r'C:\Users\berna\Desktop\Coding projects\Python Projects\seminar_form\media\seminar_declaration.docx'
+#      document = Document(doc_path)
+#      styles = document.styles
+#      styles.add_style('List Bullet', WD_STYLE_TYPE.PARAGRAPH, builtin=True)
+#      num_rows = len(rows) + 1  # +1 for the header row
+#      num_cols = len(columns)
+#      document.add_page_break()
+     
+#      table = document.add_table(rows=num_rows, cols=num_cols)
+     
+#      # Add the header row
+#      header_row = table.rows[0]
+#      header_row.cells[0].text = 'Seminar Title'
+#      header_row.cells[1].text = 'Seminar Speaker'
+#      header_row.cells[2].text = 'Seminar Date'
+
+#      # Add the data rows
+#      for i, row_data in enumerate(rows, start=1):  # Start from 1 because 0 is the header
+#           row = table.rows[i]
+#           for j, cell_data in enumerate(row_data):
+#                row.cells[j].text = str(cell_data)  # Convert to string if not already
+#      table.style = 'Table Grid'
+#      # Step 4: Save the updated document
+#      # document.save(f'C:/Users/berna/Documents/Coding Projects/Python App/seminar_form/media/seminar_form_report_{user}.docx')
+#      # if os.path.exists(f'C:/Users/berna/Documents/Coding Projects/Python App/seminar_form/media/seminar_form_report_{user}.docx'):
+#      #      report_generated = True
+#      from io import BytesIO
+#      buffer = BytesIO()
+#      document.save(buffer)
+#      buffer.seek(0)
+
+#      # Step 5: Save the file to the Django database
+#      word_file = WordDocument(name=f"Generated Report {user}")
+#      word_file.file.save(f"generated_report_{user}.docx", ContentFile(buffer.read()))
+#      buffer.close()
+#      return HttpResponse("Word document updated and saved to the database.")
+#      # else:
+#      #      report_generated = False
+#      #      return render(request, 'form-list.html',  {'report_generated': report_generated, 'data': data})
+
 def generate_report(request):
      data = SeminarFormModel.objects.filter(user=request.user)
-     report_generated=False
-     user=request.user
-     # Step 1: Connect to SQLite database and retrieve data
-     db_path = r"C:\Users\berna\Documents\Coding Projects\Python App\seminar_form\db.sqlite3"  # Path to your SQLite database
-     query = "SELECT * FROM web_app_seminarformmodel WHERE user_id="+str(user.id)  # Replace with your query
-     conn = sqlite3.connect(db_path)
-     cursor = conn.cursor()
-     cursor.execute(query)
-
-     # Fetch all rows and column names
-     rows = cursor.fetchall()
-     columns = [description[0] for description in cursor.description]
-
-     # Close the database connection
-     conn.close()
-     doc_path=r'C:\Users\berna\Documents\Coding Projects\Python App\seminar_form\media\seminar_declaration.docx'
-     document = Document(doc_path)
-     num_rows = len(rows) + 1  # +1 for the header row
-     num_cols = len(columns)
-     table = document.add_table(rows=num_rows, cols=num_cols)
-
-     # Add the header row
-     header_row = table.rows[0]
-     for idx, column_name in enumerate(columns):
-          header_row.cells[idx].text = column_name
-
-     # Add the data rows
-     for i, row_data in enumerate(rows, start=1):  # Start from 1 because 0 is the header
-          row = table.rows[i]
-          for j, cell_data in enumerate(row_data):
-               row.cells[j].text = str(cell_data)  # Convert to string if not already
-
-     # Step 4: Save the updated document
-     # document.save(f'C:/Users/berna/Documents/Coding Projects/Python App/seminar_form/media/seminar_form_report_{user}.docx')
-     # if os.path.exists(f'C:/Users/berna/Documents/Coding Projects/Python App/seminar_form/media/seminar_form_report_{user}.docx'):
-     #      report_generated = True
-     from io import BytesIO
-     buffer = BytesIO()
-     document.save(buffer)
-     buffer.seek(0)
-
-     # Step 5: Save the file to the Django database
-     word_file = WordDocument(name=f"Generated Report {user}")
-     word_file.file.save(f"generated_report_{user}.docx", ContentFile(buffer.read()))
-     buffer.close()
-     return HttpResponse("Word document updated and saved to the database.")
-     # else:
-     #      report_generated = False
-     #      return render(request, 'form-list.html',  {'report_generated': report_generated, 'data': data})
-
-
+     current_date = date.today()
+     current_date_pt = f'{current_date.day}/{current_date.month}/{current_date.year}'
+     username = request.user
+     context = {
+          'data': data,
+          'current_date_pt': current_date_pt,
+          'user': username
+     }
+     template = get_template('report_template.html')
+     html = template.render(context)
+     response = HttpResponse(content_type='application/pdf')
+     response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+     pisa_status = pisa.CreatePDF(html, dest=response)
+     
+     # Check for errors
+     if pisa_status.err:
+          return HttpResponse('We had some errors <pre>' + html + '</pre>')
+     return response   
 
 # EXECEPTIONS
 

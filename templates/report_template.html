@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Template</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            /* +99999999999999999999999999996 */
+            color: #333;
+        }
+
+        .assinatura{
+            display: flex;
+            flex-direction: column;
+            page-break-after: always;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <img src="../static/static_dirs/img/fmcb.svg">
+    <div class="container-info">
+        <p>Declara-se para os devidos efeitos que {{user}} esteve presente nos seminários apresentados devidamente na tabela mais abaixo</p>
+        <p>Este documento serve como prova de presença nos seminários para respetiva fiscalização no âmbito do Programa de Doutoramento em Ciências Biomédicas.</p>
+        <div>Universidade do Algarve, {{ current_date_pt }}</div><br><br><br>
+        <div class="assinatura">
+        <div style="text-align: right;">__________________________________________</div><br>
+        <div style="text-align: right; page-break-after: always;">Entidade responsável a assinar</div>
+        </div>
+    </div>
+    <div class="container-table">
+        <h3 style="text-align: center;"><u>Lista de seminários</u></h3> 
+        <table border="1" class="table-view">
+            <thead>
+                <th>Título do seminário</th>
+                <th>Nome do palestrante</th>
+                <th>Data do seminário</th>
+            </thead>
+            {% for k in data  %}
+            <tr> 
+                <td>{{k.seminar_title}}</td>
+                <td>{{k.seminar_speaker}}</td>
+                <td>{{k.seminar_date}}</td>
+            </tr> 
+            {% endfor %}
+        </table>
+
+
+</body>
+</html>
