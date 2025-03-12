@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 class SeminarFormModel(models.Model):
     user= models.ForeignKey(User, on_delete=models.CASCADE)
+    id = models.AutoField(primary_key=True)  # Explicitly defining ID
     seminar_title = models.CharField(max_length=100)
     seminar_speaker = models.CharField(max_length=50)
     seminar_date = models.DateField(blank=True, null=True)

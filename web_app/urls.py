@@ -28,7 +28,8 @@ urlpatterns = [
     path('authenticate/', include('accounts.urls')),
     path('add-form', seminar_form_req),
     path('form-list', all_seminars, name="full-list"),
-    path('generate_report', generate_report, name="generate_report")
+    path('generate_report', generate_report, name="generate_report"),
+    path('form-list/delete_seminar/<int:seminar_id>/', delete_seminar, name='delete_seminar'),
 ]+ static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)
 

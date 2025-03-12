@@ -14,6 +14,10 @@ from docx.enum.style import WD_STYLE_TYPE
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from datetime import date
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 
 @login_required(login_url=settings.LOGIN_URL)
 def home_page(request):
@@ -54,7 +58,7 @@ def seminar_form_req(request):
 
 def all_seminars(request):
      data = SeminarFormModel.objects.filter(user=request.user)
-     return render(request, 'form-list.html',  {'data': data})
+     return render(request, 'form-list.html',  {'seminars': data})
 
 
 # Generate report in word (it doesn't work as intended - python-docx isn't great :)
@@ -116,6 +120,24 @@ def all_seminars(request):
 #      #      report_generated = False
 #      #      return render(request, 'form-list.html',  {'report_generated': report_generated, 'data': data})
 
+
+
+@csrf_exempt  # Disable CSRF protection for simplicity; consider using CSRF tokens instead
+def delete_seminar(request, seminar_id):
+    if request.method == "POST":
+        seminar = get_object_or_404(SeminarFormModel, id=seminar_id)
+        seminar.delete()
+        return JsonResponse({"success": True})
+    return JsonResponse({"success": False}, status=400)
+
+# If you want to get by title use this instead:
+    #if request.method == "POST":
+    #   seminar = get_object_or_404(SeminarFormModel, seminar_title=seminar_title)
+    #   seminar.delete()
+    #    return JsonResponse({"success": True})
+    #return JsonResponse({"success": False}, status=400)
+
+
 def generate_report(request):
      data = SeminarFormModel.objects.filter(user=request.user)
      current_date = date.today()
@@ -131,11 +153,21 @@ def generate_report(request):
      response = HttpResponse(content_type='application/pdf')
      response['Content-Disposition'] = 'attachment; filename="report.pdf"'
      pisa_status = pisa.CreatePDF(html, dest=response)
+     if len(data) != 0:
      
-     # Check for errors
-     if pisa_status.err:
-          return HttpResponse('We had some errors <pre>' + html + '</pre>')
-     return response   
+          # Check for errors
+          if pisa_status.err:
+               return HttpResponse('We had some errors <pre>' + html + '</pre>')
+          return response 
+     else:
+#           return HttpResponse("""
+#         <script>
+#             alert('Your seminar list is empty! Make sure you have at least 1 seminar to generate a report');
+#             window.location.href = '/';  // Redirect after alert
+#         </script>
+#     """)
+          messages.error(request, "Your seminar list is empty! Make sure you have at least 1 seminar to generate a report")
+          return redirect('/form-list')
 
 # EXECEPTIONS
 
