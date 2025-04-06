@@ -4,61 +4,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="shortcut icon" href="{% static 'img/worksheet.ico' %}">
-    <title>PhD Seminar Form CB - Login</title>
+    <title>Login & Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap5.3/bootstrap.min.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/new-seminar-icon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/styles-login.css' %}">
+    
 </head>
 <body>
-
-<nav>
-    <img src="{% static 'img/ualg-logo.png' %}">
-    <h1>Biomedical Sciences PhD Seminar Form Filling <img style="width: 100px; height: auto" src="{% static 'img/worksheet.png' %}"></h1>
-</nav>
+    <img src="{% static 'img/fmcb.svg' %}" alt="Logo" class="corner-logo">
     
-<div class="container">
-<h3>Login Page</h3>
+    <div class="page-wrapper">
+        <header class="page-header">
+            <img src="{% static 'img/new seminar icon.png' %}" alt="Logo" class="seminar-logo">
+            <h1>Seminar Form Submission</h1>
+        </header>
 
-   
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-            <div class="card bg-dark text-white" style="border-radius: 1rem;">
-              <div class="card-body p-5 text-center">
-    
-                <div class="mb-md-5 mt-md-4">
-                  <form action="" method="POST">
+        <div class="container-no-bootstrap">
+            <div class="form-box">
+              
+                <!-- <form id="auth-form">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="name" placeholder="Full Name">
+                    </div>
+                    <div class="input-group">
+                      <i class="fa-solid fa-at"></i>
+                        <input type="text" id="user" placeholder="Username">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Password">
+                    </div>
+                    <button type="submit" id="submit-btn">Login</button>
+                    <p class="toggle-text">Don't have an account? <span id="toggle-btn">Sign Up</span></p>
+                </form> -->
+                <!-- Login Form -->
+                <form method="POST" id="auth-form">
                   {% csrf_token %}
-                  <h3>Seminar form filling Login</h3>
                   
-                 <br><br><h2 class="fw-bold mb-2 text-uppercase">APP Login</h2>
-                  <p class="text-white-50 mb-5">Please enter your given login credentials<br>(Private version)</p>
-                  <div class="form-outline form-white mb-4">
-                    <input type="user" id="username" class="form-control form-control-lg" name="username" required="">
-                    <label class="form-label" for="username">User</label>
+                  <!-- Login Form -->
+                  <div id="login-form" class="auth-form">
+                      <h2>Account login</h2>
+                      <div class="input-group">
+                          <i class="fas fa-user"></i>
+                          {{ login_form.username }}
+                      </div>
+                      <div class="input-group">
+                          <i class="fas fa-lock"></i>
+                          {{ login_form.password }}
+                      </div>
+                      <button type="submit" id="submit-btn" name="login">Login</button>
+                      <p class="toggle-text">Don't have an account? <span id="toggle-to-signup" onclick="toggleForm()">Sign Up</span></p>
                   </div>
-    
-                  <div class="form-outline form-white mb-4">
-                    <input type="password" id="password" class="form-control form-control-lg" name="password" required="">
-                    <label class="form-label" for="password">Password</label>
+              
+                  <!-- Register Form -->
+                  <div id="signup-form" class="auth-form" style="display: none;">
+                      <h2>Create an account</h2>
+                      <div class="input-group">
+                          <i class="fas fa-user"></i>
+                          {{ signup_form.full_name }}
+                      </div>
+                      <div class="input-group">
+                          <i class="fa-solid fa-at"></i>
+                          {{ signup_form.username }}
+                      </div>
+                      <div class="input-group">
+                          <i class="fas fa-lock"></i>
+                          {{ signup_form.password }}
+                      </div>
+                      <div class="input-group">
+                          <i class="fas fa-lock"></i>
+                          {{ signup_form.confirm_password }}
+                      </div>
+                      <button type="submit" id="submit-btn" name="signup">Sign Up</button>
+                      <p class="toggle-text">Already have an account? <span id="toggle-to-login" onclick="toggleForm()">Login</span></p>
                   </div>
-    
-                  <button class="btn btn-outline-info px-5" data-mdb-ripple-color="dark" type="submit">Login</button><br><br>
-                  
-                  </form>
-                  <div>You dont have an account?</div>
-                <a href="{% url 'register' %}">Register</a>
-                </div>
-              </div>
+              </form>
+
+        <!-- <p class="toggle-text">
+            {% if toggle == 'login' %}
+                Don't have an account? <span id="toggle-btn" onclick="toggleForm()">Sign Up</span>
+            {% else %}
+                Already have an account? <span id="toggle-btn" onclick="toggleForm()">Login</span>
+            {% endif %}
+        </p> -->
+
+            </div>
+        </div>
+        <p>
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <i class="fa-solid fa-circle-info"></i> &nbspClick me for more info!
+            </button>
+          </p>
+          <div class="collapse" id="collapseExample">
+            <div class="card card-body text-white">
+                A seminar form submission for students in Biomedical Sciences 
+                Ph.D or any Ph.D that requires the attendence in several seminars per year in the university of Algarve.
             </div>
           </div>
-        </div>
-      </div>
-</div>
+        <p class="footer-paragraph">
+            © Bernardo Estevam - Seminar Form Submission. All rights reserved, <script>new Date().getFullYear()>2010&&document.write(new Date().getFullYear());</script>
+        </p>   
+    </div>
 
+<!-- <script>
+    function toggleForm() {
+        var currentToggle = document.getElementById("form-title-no-bootstrap").textContent.trim();
+        window.location.href = "{% url 'auth' %}?toggle=" + (currentToggle === "Create an Account" ? "login" : "signup");
+    }
+</script> -->
 
+<script>
+  function toggleForm() {
+      // Get both forms by their IDs
+      var loginForm = document.getElementById('login-form');
+      var signupForm = document.getElementById('signup-form');
+
+      // Toggle the visibility of the forms
+      if (loginForm.style.display === 'none') {
+          // Show the login form and hide the signup form
+          loginForm.style.display = 'block';
+          signupForm.style.display = 'none';
+      } else {
+          // Show the signup form and hide the login form
+          loginForm.style.display = 'none';
+          signupForm.style.display = 'block';
+      }
+  }
+</script>
 
 <script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/scriptLogin.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap5.3/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

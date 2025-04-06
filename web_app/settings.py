@@ -115,7 +115,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'web_app.wsgi.application'
 
-LOGIN_URL = '/authenticate/login'
+LOGIN_URL = 'login/account-auth'
 
 
 # Database
