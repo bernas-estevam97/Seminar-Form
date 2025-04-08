@@ -5,13 +5,13 @@ class LoginForm(forms.Form):
         max_length=100,
         widget=forms.TextInput(attrs={
             'placeholder': 'Username',
-            'id': 'user'
+            'id': 'login-user'
         })
     )
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Password',
-            'id': 'password'
+            'id': 'login-password'
         })
     )
 
@@ -27,13 +27,13 @@ class RegisterForm(forms.Form):
         max_length=100,
         widget=forms.TextInput(attrs={
             'placeholder': 'Username',
-            'id': 'user'
+            'id': 'register-user'
         })
     )
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Password',
-            'id': 'password'
+            'id': 'signup-password'
         })
     )
     confirm_password = forms.CharField(
