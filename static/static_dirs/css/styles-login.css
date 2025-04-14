@@ -12,10 +12,17 @@ body {
     min-height: 100vh;
     background: linear-gradient(135deg, #0f3443, #34e89e);
     background-attachment: fixed;
-    overflow: hidden;
+    overflow: visible;
 }
 
-/* Subtle moving blobs for an aesthetic effect */
+/* Disable the pseudo-elements temporarily */
+body::before,
+body::after {
+    content: none;
+}
+
+
+/* Subtle moving blobs for an aesthetic effect
 body::before {
     content: '';
     position: absolute;
@@ -40,7 +47,7 @@ body::after {
     right: 15%;
     filter: blur(70px);
     animation: float 7s infinite alternate ease-in-out;
-}
+} */
   
 @keyframes float {
     from {
@@ -59,7 +66,7 @@ body::after {
     margin-bottom: 5rem;
     color: #fff;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 1s ease-in-out;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .info-text{
@@ -74,7 +81,7 @@ body::after {
     text-align: center;
     
     border: 1px solid rgba(255, 255, 255, 0.3);
-    animation: fadeIn 1s ease-in-out;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .seminar-logo{
@@ -208,7 +215,7 @@ button:hover {
     max-width: 400px;
     line-height: 1.5;
     padding: 0 1rem;
-    animation: fadeIn 1s ease-in-out;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .footer-paragraph a {
@@ -283,3 +290,13 @@ textarea:active {
     max-width: 500px;
     border: 1px solid rgba(255, 255, 255, 0.3); 
 }
+
+
+button.btn-close{
+    margin-top: 0 !important;
+    transition: none !important; 
+ }
+ 
+ button.btn-close:hover{
+     background: transparent var(--bs-btn-close-bg) center / 1em auto no-repeat !important;
+ }

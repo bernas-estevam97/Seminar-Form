@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,13 +23,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-t7h17!kbu_id1v06)j$+ti^^lski-#*@3+8*&(0(q-d+-=%_3j'
+SECRET_KEY = os.getenv('S_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
+RECAPTCHA_PUBLIC_KEY = '6LcCIBgrAAAAACrpOCJRbkt6kAtwosKroB7Typs7'
+RECAPTCHA_PRIVATE_KEY = os.getenv('G_RECAPTCHA_KEY')
+
+RECAPTCHA_REQUIRED_SCORE = 0.85
 
 # Application definition
 

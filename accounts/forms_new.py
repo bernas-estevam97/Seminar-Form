@@ -1,4 +1,6 @@
 from django import forms
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV3
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -54,6 +56,8 @@ class RegisterForm(forms.Form):
             'onblur': "this.placeholder='Confirm Password'"
         })
     )
+
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
     def clean_confirm_password(self):
         # Custom validation to ensure that the password and confirm_password match

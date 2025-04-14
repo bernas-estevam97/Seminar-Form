@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap5.3/bootstrap.min.css' %}">
     <link rel="shortcut icon" href="{% static 'img/new-seminar-icon.ico' %}">
     <link rel="stylesheet" href="{% static 'css/styles-login.css' %}">
-    
+    <!-- Add reCAPTCHA v3 script in the head section -->
+<script src="https://www.google.com/recaptcha/api.js?render=6LcCIBgrAAAAACrpOCJRbkt6kAtwosKroB7Typs7"></script>
+
 </head>
 <body>
     <img src="{% static 'img/fmcb.svg' %}" alt="Logo" class="corner-logo">
@@ -21,77 +23,89 @@
         </header>
 
         <div class="container-no-bootstrap">
-            <div class="form-box">
-              
-                <!-- <form id="auth-form">
-                    <div class="input-group">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="name" placeholder="Full Name">
-                    </div>
-                    <div class="input-group">
-                      <i class="fa-solid fa-at"></i>
-                        <input type="text" id="user" placeholder="Username">
-                    </div>
-                    <div class="input-group">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" placeholder="Password">
-                    </div>
-                    <button type="submit" id="submit-btn">Login</button>
-                    <p class="toggle-text">Don't have an account? <span id="toggle-btn">Sign Up</span></p>
-                </form> -->
-                <!-- LOGIN FORM -->
-<form method="POST" id="login-form" class="auth-form">
-    {% csrf_token %}
-    <h2>Account login</h2>
-    <div class="input-group">
-        <i class="fas fa-user"></i>
-        {{ login_form.username }}
-    </div>
-    <div class="input-group">
-        <i class="fas fa-lock"></i>
-        {{ login_form.password }}
-    </div>
-    <button type="submit" name="login">Login</button>
-    <p class="toggle-text">
-        Don't have an account? <span id="toggle-to-signup" onclick="toggleForm()">Sign Up</span>
-    </p>
-</form>
+            <div class="form-box">    
 
-<!-- SIGNUP FORM -->
-<form method="POST" id="signup-form" class="auth-form" style="display: none;">
-    {% csrf_token %}
-    <h2>Create an account</h2>
-    <div class="input-group">
-        <i class="fas fa-user"></i>
-        {{ signup_form.full_name }}
-    </div>
-    <div class="input-group">
-        <i class="fa-solid fa-at"></i>
-        {{ signup_form.username }}
-    </div>
-    <div class="input-group">
-        <i class="fas fa-lock"></i>
-        {{ signup_form.password }}
-    </div>
-    <div class="input-group">
+
+  
+  <!-- LOGIN FORM -->
+  {% if toggle == "login" %}
+  <form method="POST" id="login-form" class="auth-form" autocomplete="off">
+      {% csrf_token %}
+      <input type="hidden" name="form_type" value="login">
+      <input type="hidden" name="next" value="{{ next }}">
+  
+      <h2>Account login</h2>
+      <div class="input-group">
+          <i class="fas fa-user"></i>
+          {{ login_form.username }}
+      </div>
+      <div class="input-group">
+          <i class="fas fa-lock"></i>
+          {{ login_form.password }}
+      </div>
+      <button type="submit" name="login">Login</button>
+  
+      <p class="toggle-text">
+          Don't have an account?
+          <a href="?toggle=signup{% if next %}&next={{ next }}{% endif %}">Sign Up</a>
+      </p>
+  
+      {% if messages %}
+      <div class="messages">
+          {% for message in messages %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+      </div>
+      {% endif %}
+  </form>
+  {% endif %}
+  
+  <!-- SIGNUP FORM -->
+  {% if toggle == "signup" %}
+  <form method="POST" id="signup-form" class="auth-form" autocomplete="off">
+      {% csrf_token %}
+      <input type="hidden" name="form_type" value="register">
+      <input type="hidden" name="next" value="{{ next }}">
+  
+      <h2>Create an account</h2>
+      <div class="input-group">
+          <i class="fas fa-user"></i>
+          {{ signup_form.full_name }}
+      </div>
+      <div class="input-group">
+          <i class="fa-solid fa-at"></i>
+          {{ signup_form.username }}
+      </div>
+      <div class="input-group">
+          <i class="fas fa-lock"></i>
+          {{ signup_form.password }}
+      </div>
+      <div class="input-group">
         <i class="fas fa-lock"></i>
         {{ signup_form.confirm_password }}
     </div>
-    <button type="submit" name="signup">Sign Up</button>
-    <p class="toggle-text">
-        Already have an account? <span id="toggle-to-login" onclick="toggleForm()">Login</span>
-    </p>
-</form>
-
-                
-
-        <!-- <p class="toggle-text">
-            {% if toggle == 'login' %}
-                Don't have an account? <span id="toggle-btn" onclick="toggleForm()">Sign Up</span>
-            {% else %}
-                Already have an account? <span id="toggle-btn" onclick="toggleForm()">Login</span>
-            {% endif %}
-        </p> -->
+      <button type="submit" name="signup">Sign Up</button>
+  
+      <p class="toggle-text">
+          Already have an account?
+          <a href="?toggle=login{% if next %}&next={{ next }}{% endif %}">Login</a>
+      </p>
+  
+      {% if messages %}
+      <div class="messages">
+          {% for message in messages %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+      </div>
+      {% endif %}
+  </form>
+  {% endif %}        
 
             </div>
         </div>
@@ -111,27 +125,101 @@
         </p>   
     </div>
 
-<!-- <script>
-    function toggleForm() {
-        var currentToggle = document.getElementById("form-title-no-bootstrap").textContent.trim();
-        window.location.href = "{% url 'auth' %}?toggle=" + (currentToggle === "Create an Account" ? "login" : "signup");
-    }
-</script> -->
 
 <script>
-function toggleForm() {
-    const loginForm = document.getElementById("login-form");
-    const signupForm = document.getElementById("signup-form");
+    // Ensure the form is available before interacting with it
+    document.addEventListener('DOMContentLoaded', function() {
+        grecaptcha.ready(function() {
+            // Ensure we are handling each form appropriately
+            const forms = document.querySelectorAll('form'); // Handle multiple forms (login/signup)
 
-    if (loginForm.style.display === "none") {
-        loginForm.style.display = "block";
-        signupForm.style.display = "none";
-    } else {
-        loginForm.style.display = "none";
-        signupForm.style.display = "block";
+            forms.forEach(form => {
+                const formId = form.id;
+                const action = (formId === "signup-form") ? "signup" : "login"; // Default to login if not signup
+                
+                // Execute reCAPTCHA for each form when the page is loaded
+                grecaptcha.execute("6LcCIBgrAAAAACrpOCJRbkt6kAtwosKroB7Typs7", { action: action }).then(function(token) {
+                    // Ensure the form exists before appending the token input
+                    let hiddenInput = form.querySelector('input[name="g-recaptcha-response"]');
+                    
+                    // If the hidden input field doesn't exist, create it
+                    if (!hiddenInput) {
+                        hiddenInput = document.createElement("input");
+                        hiddenInput.setAttribute("type", "hidden");
+                        hiddenInput.setAttribute("name", "g-recaptcha-response");
+                        form.appendChild(hiddenInput);
+                    }
+
+                    // Set the token value
+                    hiddenInput.setAttribute("value", token);
+                });
+            });
+        });
+    });
+</script>
+    
+
+<script>
+    // Function to toggle between login and signup forms, clear fields, and hide messages
+    function toggleForm() {
+        const loginForm = document.getElementById("login-form");
+        const signupForm = document.getElementById("signup-form");
+        const messageBox = document.querySelector(".messages");
+    
+        if (loginForm.style.display === "none") {
+            // Clear input fields when toggling to the login form
+            clearFormFields(signupForm);
+            
+            // Clear messages
+            clearMessages(messageBox);
+    
+            loginForm.style.display = "block";
+            signupForm.style.display = "none";
+        } else {
+            // Clear input fields when toggling to the signup form
+            clearFormFields(loginForm);
+            
+            // Clear messages
+            setTimeout(() => {
+                clearMessages(messageBox);
+            }, 3000);  // clear after 3 seconds
+    
+            loginForm.style.display = "none";
+            signupForm.style.display = "block";
+        }
     }
-}
+    
+    // Function to clear all input fields inside a form
+    function clearFormFields(form) {
+        if (form) { // Ensure the form exists before trying to clear fields
+            const inputs = form.querySelectorAll('input:not([type="hidden"])');
+            inputs.forEach(input => {
+                input.value = ''; // Clear the value of each input
+            });
+        }
+    }
+    
+    // Function to clear messages
+    function clearMessages(messageBox) {
+        if (messageBox) {
+            messageBox.innerHTML = ''; // Clear message box content
+        }
+    }
+    
+    // Clear form fields and messages on page load (refresh)
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById("login-form");
+        const signupForm = document.getElementById("signup-form");
+        const messageBox = document.querySelector(".messages");
+    
+        // Ensure both forms exist before clearing
+        if (loginForm && signupForm) {
+            // Clear both forms' input fields when the page is loaded or refreshed
+            clearFormFields(loginForm);
+            clearFormFields(signupForm);
+        }
 
+    });
 </script>
 
 <script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>

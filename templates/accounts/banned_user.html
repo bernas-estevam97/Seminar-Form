@@ -1,0 +1,24 @@
+<!-- banned_user.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Locked</title>
+    <link rel="shortcut icon" href="{% static 'img/prohibited.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/banned.css' %}">  <!-- Optional: Add custom styles if needed -->
+</head>
+<body>
+    <div class="container-no-bootstrap">
+        <div class="page-header">
+            <h1>Account Locked</h1>
+        </div>
+        <div class="info-text">
+            <p>Due to multiple failed login attempts, your account has been temporarily locked.</p>
+            <p>Please try again after <strong>{{ time_left }}</strong> minutes.</p>
+            <p>If you believe this is a mistake, please contact support.</p>
+        </div>
+    </div>
+</body>
+</html>
