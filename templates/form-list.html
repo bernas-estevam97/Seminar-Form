@@ -2,113 +2,134 @@
 {% load static %}
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token }}">
-    <link rel="stylesheet" href="{% static 'css/form-list.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="shortcut icon" href="{% static 'img/worksheet.ico' %}">
-    <title>PhD Seminar Form CB - Form Filling</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token }}" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/bootstrap5.3/bootstrap.min.css' %}" />
+  <link rel="shortcut icon" href="{% static 'img/worksheet.ico' %}" />
+  <title>PhD Seminar Form CB - Form Filling</title>
 </head>
 <body>
 
-<nav>
-    <img src="{% static 'img/ualg-logo.png' %}">
-    <h1>Biomedical Sciences PhD Seminar Form Filling <img style="width: 100px; height: auto" src="{% static 'img/worksheet.png' %}"></h1>
-</nav>
-<div class="login-info"><div>Welcome! You are logged in as <b><u>{{ user.get_username }}</u></b></div><a class="logout-button" href="{% url 'logout' %}">Logout</a></div>
-<div class="full-container">
+  <div class="page-wrapper">
 
+    <!-- Navbar -->
+    <div class="navbar-style">
+      <h1>
+        Biomedical Sciences ABC-Ri Seminars List
+        <img src="{% static 'img/worksheet.png' %}" style="width: 100px; height: auto;" />
+      </h1>
+    </div>
 
+    <!-- Login Info -->
+    <div class="login-info">
+      <div>
+        Welcome! You are logged in as <b><u>{{ user.first_name }} {{ user.last_name }}</u></b>
+      </div>
+      <a class="logout-button" href="{% url 'logout' %}">Logout</a>
+    </div>
 
-<h1><u>All {{ user.get_username }} seminars</u></h1>
+    <!-- Seminar List Container -->
+    <div class="form-container">
 
-<!-- <div class="table-view"> -->
-<div class="container">  
-<table border="1" class="table-view">
-    <thead>
-        <th style="background: rgb(124, 194, 124);">Seminar Title</th>
-        <th style="background: rgb(124, 194, 124);">Seminar Speaker</th>
-        <th style="background: rgb(124, 194, 124);">Seminar Date</th>
-        <th style="background: red; text-align: center; color: white;">Remove Seminar</th>
-    </thead>
-    {% for k in seminars %}
-    <tr id="seminar-{{ k.id }}">
-        <td>{{k.seminar_title}}</td>
-        <td>{{k.seminar_speaker}}</td>
-        <td>{{k.seminar_date}}</td>
-        <td class="no-style"><button type="button" class="delete-btn" data-id="{{ k.id }}">Delete</button></td>
-    </tr> 
-    {% endfor %}
-</table>
+      <h1><u>All {{ user.first_name }} {{ user.last_name }} seminars</u></h1>
 
-<!-- </div> -->
-<a href="{% url 'home' %}" class="btn btn-info">Submit a new seminar</a><br><br>
-<form action="{% url 'generate_report' %}" method="GET">
-    <button action="{% url 'generate_report' %}" type="submit" class="btn btn-success">Generate report for {{user.get_username }}</button>
-</form><br>
-{% if report_generated %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    Your report was generated! Downloading...
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
- {% endif %}
- {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{message}}
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover text-white">
+          <thead class="table-success text-dark">
+            <tr>
+              <th>Seminar Title</th>
+              <th>Seminar Speaker</th>
+              <th>Seminar Date</th>
+              <th class="text-center text-white bg-danger">Remove Seminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for k in seminars %}
+            <tr id="seminar-{{ k.id }}">
+              <td>{{ k.seminar_title }}</td>
+              <td>{{ k.seminar_speaker }}</td>
+              <td>{{ k.seminar_date }}</td>
+              <td class="text-center">
+                <button type="button" class="delete-btn btn btn-sm btn-danger" data-id="{{ k.id }}">
+                  Delete
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <a href="{% url 'home' %}" class="btn btn-info">Submit a new seminar</a><br /><br />
+
+      <form action="{% url 'generate_report' %}" method="GET">
+        <button type="submit" class="btn btn-success">Generate report for {{ user.get_username }}</button>
+      </form><br />
+
+      {% if report_generated %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Your report was generated! Downloading...
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-    {% endfor %}
-{% endif %} 
-</div>
-</div>
+      {% endif %}
 
-<script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery.modal.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-<script>
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+      {% endif %}
+
+    </div> <!-- form-container -->
+
+  </div> <!-- page-wrapper -->
+
+  <!-- Scripts -->
+  <script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.modal.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap5.3/bootstrap.bundle.min.js' %}"></script>
+  <script>
     document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll(".delete-btn").forEach(button => {
-            button.addEventListener("click", function() {
-                let seminarId = this.getAttribute("data-id");
-                // BY TITLE: let seminarTitle = this.getAttribute("data-id");
-                // BY TITLE: let encodedTitle = encodeURIComponent(seminarTitle);  // Encode title for URL safety
-    
-                fetch(`form-list/delete_seminar/${seminarId}/`, {
-                    method: "POST",
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest",
-                        "X-CSRFToken": getCookie("csrftoken")
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById(`seminar-${seminarId}`).remove();
-                        // BY TITLE:  document.getElementById(`seminar-${seminarTitle.replace(/\s+/g, '-').toLowerCase()}`).remove();
-                    } else {
-                        alert("Error deleting seminar");
-                    }
-                });
-            });
-        });
-    
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                let cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    let cookie = cookies[i].trim();
-                    if (cookie.startsWith(name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
+      document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", function() {
+          let seminarId = this.getAttribute("data-id");
+          fetch(`form-list/delete_seminar/${seminarId}/`, {
+            method: "POST",
+            headers: {
+              "X-Requested-With": "XMLHttpRequest",
+              "X-CSRFToken": getCookie("csrftoken")
             }
-            return cookieValue;
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              document.getElementById(`seminar-${seminarId}`).remove();
+            } else {
+              alert("Error deleting seminar");
+            }
+          });
+        });
+      });
+
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          let cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
         }
+        return cookieValue;
+      }
     });
-    </script>
+  </script>
 </body>
 </html>

@@ -8,6 +8,7 @@ class SeminarFormModel(models.Model):
     seminar_title = models.CharField(max_length=100)
     seminar_speaker = models.CharField(max_length=50)
     seminar_date = models.DateField(blank=True, null=True)
+    verification_id = models.CharField(blank=False, null=False, max_length=20)
 
     def __str__(self):
         return f'{str(self.user) + ": " + str(self.seminar_title)}'

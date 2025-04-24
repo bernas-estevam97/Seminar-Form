@@ -25,12 +25,23 @@ class SeminarForm(forms.Form):
     )
     #seminar date
     seminar_date=forms.DateField(
-        widget=forms.DateInput(attrs={
-            'class':'form-control',
-            'type': 'date'
+        widget=forms.TextInput(attrs={
+            'class': 'form-control flatpickr w-30 mx-auto',  # Apply custom class for styling
+            'placeholder': 'Select a date',  # Add a placeholder for better UX
+            'autocomplete': 'off',
         }
         ),
         # initial= datetime.date.today(),
+    )
+    #verification_code
+    verification_code=forms.CharField(
+        max_length = 100,
+        label = "Verification code",
+        required=True,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control w-30 mx-auto'
+        }
+        ),
     )
 
 

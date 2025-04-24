@@ -92,7 +92,17 @@ body::after {
     z-index: 10;
 }
 
-.corner-logo {
+.left-corner-logo {
+    position: absolute;
+    top: 20px;
+    left: 50px;
+    width: 300px;
+    height: 100px;
+    object-fit: contain;
+    z-index: 10;
+}
+
+.right-corner-logo {
     position: absolute;
     top: 20px;
     right: 0px;
@@ -101,6 +111,7 @@ body::after {
     object-fit: contain;
     z-index: 10;
 }
+
 
 .page-header h1 {
     font-size: 30px;

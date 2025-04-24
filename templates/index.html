@@ -4,52 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap5.3/bootstrap.min.css' %}">
     <link rel="shortcut icon" href="{% static 'img/worksheet.ico' %}">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Optional Theme -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_green.css">
+
     <title>PhD Seminar Form CB - Form Filling</title>
 </head>
 <body>
 
-<nav>
-    <img src="{% static 'img/ualg-logo.png' %}">
-    <h1>Biomedical Sciences PhD Seminar Form Filling <img style="width: 100px; height: auto" src="{% static 'img/worksheet.png' %}"></h1>
-</nav>
-<div class="login-info"><div>Welcome! You are logged in as <b><u>{{ user.get_username }}</u></b></div><a class="logout-button" href="{% url 'logout' %}">Logout</a></div>
+<div class="page-wrapper">
 
-<div class="form-container">
-<form action="add-form" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <p>Seminar title:</p>
-    {{form.seminar_title}}
-    <p>Seminar Speaker:</p>
-    {{form.seminar_speaker}}
-    <p>Seminar Date:</p>
-    {{form.seminar_date}}
-    <button type="submit" class="btn btn-primary mt-2">Submit</button>
-</form>
-{% if main_page %}
+    <header class="header-section">
+        <nav class="navbar-style">
+            
+            <h1><u>Biomedical Sciences Ph.D</u> - ABC-Ri Seminar Form Filling</h1>
+            <img src="{% static 'img/Logo_ABCRI.png' %}" alt="Worksheet Logo" class="corner-logo">
+            
+        </nav>
 
-{% elif submitted %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    Your seminar form was submitted successfully!
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>  
-{% else %}
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    Something went wrong with your form submission try again.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>
-{% endif %}
-<!-- <button action="" class="btn btn-primary" id="toggleBtn"><span id="toggleFunc">View</span> seminar list for {{user.get_username }}</button> -->
-<a href="{% url 'full-list' %}" class="btn btn-success">View seminar list for {{user.get_username }}</a>
-<!-- </div> -->
-<!-- <button action="" onclick="" class="btn btn-success">Generate report for {{user.get_username }}</button> -->
+        <div class="login-info">
+            <div>
+                Welcome! You are logged in as <b><u>{{ user.first_name }} {{ user.last_name }}</u></b>
+            </div>
+            <a class="logout-button" href="{% url 'logout' %}">Logout</a>
+        </div>
+    </header>
+
+    <main class="form-container">
+        <form action="add-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>Seminar title:</p>
+            {{ form.seminar_title }}
+            <p>Seminar Speaker:</p>
+            {{ form.seminar_speaker }}
+            <p>Seminar Date:</p>
+            {{ form.seminar_date }}
+            <p>Seminar verificaiton code:</p>
+            {{ form.verification_code }}
+            <button type="submit" class="btn btn-primary mt-2">Submit</button>
+        </form>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script>
+          flatpickr(".flatpickr", {
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            allowInput: true,
+          });
+        </script>
+
+        {% if main_page %}
+        {% elif submitted %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Your seminar form was submitted successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% else %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            Something went wrong with your form submission. Try again.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+
+        <a href="{% url 'full-list' %}" class="btn btn-success">View seminar list for {{ user.get_username }}</a>
+    </main>
+
 </div>
 
-<script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery.modal.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/bootstrap5.3/bootstrap.bundle.min.js' %}"></script>
-<!-- <script type="text/javascript" src="{% static 'js/toggle-list.js' %}"></script> -->
+<script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap5.3/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

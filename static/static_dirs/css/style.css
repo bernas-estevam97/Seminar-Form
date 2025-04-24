@@ -1,0 +1,274 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f3443, #34e89e);
+    min-height: 100vh;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+    overflow-x: hidden;
+}
+
+.page-wrapper {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.navbar-style{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    color: white;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.navbar-style h1 {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.8rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-style img {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+}
+
+.corner-logo {
+    width: 100px;
+    height: auto;
+}
+
+
+
+
+.login-info {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.logout-button {
+    background: #dc3545;
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    text-decoration: none;
+}
+
+.logout-button:hover {
+    background: rgb(194, 35, 35); 
+    text-decoration: underline;
+}
+
+.form-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    color: white;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.form-container h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+
+.form-container p {
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+/* General form styling */
+.form-control {
+    width: 100% !important;
+    background: transparent !important;
+    color: white !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    backdrop-filter: blur(10px);
+    border-radius: 5px !important;
+    margin-bottom: 10px !important;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+
+/* Change Flatpickr calendar header background */
+.flatpickr-calendar .flatpickr-months {
+    background-color: #40cc92;
+    color: white; /* Makes text (month/year) readable */
+    border-radius: 8px 8px 0 0;
+  }
+  
+  /* Optional: Change the month & year text */
+  .flatpickr-calendar .flatpickr-current-month {
+    color: white;
+    font-weight: bold;
+  }
+  
+  /* Optional: Style the navigation arrows */
+  .flatpickr-calendar .flatpickr-prev-month,
+  .flatpickr-calendar .flatpickr-next-month {
+    color: white;
+    fill: white; /* for SVG arrow icons */
+  }
+
+
+.w-30 {
+    width: 30% !important;
+}
+
+button.btn-primary {
+    background-color: #1f8a70;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    transition: 0.3s ease;
+    padding: 10px 20px;
+    margin-top: 15px;
+}
+
+button.btn-primary:hover {
+    background-color: #136f63;
+    transform: scale(1.05);
+}
+
+a.btn-success {
+    margin-top: 1rem;
+    background-color: #34e89e;
+    color: #0f3443;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: 0.3s ease;
+    padding: 10px 20px;
+    display: inline-block;
+    text-decoration: none;
+}
+
+a.btn-success:hover {
+    background-color: #28b48f;
+    color: white;
+    transform: scale(1.05);
+}
+
+.alert {
+    margin-top: 2rem;
+    border-radius: 10px;
+    font-weight: bold;
+    backdrop-filter: blur(15px);
+    color: white;
+}
+
+.alert-success {
+    background-color: rgba(0, 128, 0, 0.2);
+    border: 1px solid rgba(0, 128, 0, 0.4);
+}
+
+.alert-warning {
+    background-color: rgba(255, 165, 0, 0.2);
+    border: 1px solid rgba(255, 165, 0, 0.4);
+}
+
+.btn-close {
+    filter: invert(1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+/* FORM LIST PAGE */
+
+/* Optional: Style the table in form-list.html */
+/* Style the seminar table for better division of rows and columns */
+.table-view {
+    width: 100%;
+    border-collapse: collapse; /* Ensures borders between cells */
+    margin-top: 2rem;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.table-view th, .table-view td {
+    padding: 12px 20px; /* More spacing for better readability */
+    text-align: center;  /* Center the text */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Light border for separation */
+    font-size: 1rem; /* Consistent font size */
+}
+
+.table-view th {
+    background-color: rgba(64, 204, 146, 0.4); /* Matches your green theme */
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase; /* Capitalize column headers */
+    border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.table-view td {
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle background for rows */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.table-view tr:hover {
+    background-color: rgba(64, 204, 146, 0.2); /* Slight hover effect for rows */
+    cursor: pointer;
+}
+
+.table-view td button.delete-btn {
+    background-color: #dc3545;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    text-decoration: none;
+}
+
+.table-view td button.delete-btn:hover {
+    background-color: #bb2d3b;
+}
+
+  
