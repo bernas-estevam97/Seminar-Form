@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Template</title>
+    <style>
+        @page {
+          margin: 2.5cm;
+        }
+    
+        body {
+          font-family: "Times New Roman", serif;
+          font-size: 14pt;
+          color: #000;
+          margin: 0;
+          padding: 0;
+        }
+
+        .center {
+            text-align: center;
+        }
+    
+        .container-info {
+          width: 100%;
+          max-width: 800px;
+          margin: 0 auto;
+          text-align: justify;
+          line-height: 1.6;
+        }
+    
+        img {
+          display: block;
+          margin: 0 auto 30px auto;
+          max-width: 300px;
+        }
+    
+        .assinatura {
+            position: absolute;
+            bottom: 2.5cm; /* Adjust to your preferred spacing from the page bottom */
+            right: 0;
+            width: 100%;
+            text-align: right;
+            font-size: 14pt;
+            line-height: 1.2;
+        }
+    
+        .assinatura div {
+            margin: 0;
+            padding: 0;
+            font-size: 14pt;
+            line-height: 1.2;
+        }
+    
+        .container-table {
+          width: 100%;
+          max-width: 900px;
+          margin: 2cm auto 0 auto;
+        }
+    
+        .table-view {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 13pt;
+        }
+    
+        .table-view th, .table-view td {
+          border: 1px solid black;
+          padding: 8px 12px;
+          text-align: left;
+        }
+    
+        .table-view th {
+          background-color: #f0f0f0;
+        }
+    
+        h3 {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+    
+        .underline {
+          text-decoration: underline;
+        }
+    
+      </style>
+</head>
+<body>
+
+    <img src="../static/static_dirs/img/fmcb.svg"><br><br>
+    <div class="center">
+        <h2>DECLARAÇÃO</h2>
+      </div><br>
+    <div class="container-info">
+        <p>Declara-se para os devidos efeitos que {{user}} esteve presente nos seminários apresentados devidamente na tabela mais abaixo.</p>
+        <p>Este documento serve como prova de presença nos seminários para respetiva fiscalização no âmbito do Programa de Doutoramento em Ciências Biomédicas.</p>
+        <div>Universidade do Algarve, {{ current_date_pt }}</div><br><br><br><br><br><br><br><br><br>
+        <div class="assinatura">
+            <div>__________________________________________</div><br>
+            <div>Entidade responsável a assinar</div>
+        </div>
+    </div>
+    <div class="container-table" style="page-break-before: always;">
+        <h3 style="text-align: center;"><u>Lista de seminários</u></h3> 
+        <table border="1" class="table-view">
+            <thead>
+                <th>Título do seminário</th>
+                <th>Palestrante do seminário</th>
+                <th>Data do seminário</th>
+            </thead>
+            {% for k in data  %}
+            <tr> 
+                <td>{{k.seminar_title}}</td>
+                <td>{{k.seminar_speaker}}</td>
+                <td>{{k.seminar_date}}</td>
+            </tr> 
+            {% endfor %}
+        </table>
+
+
+</body>
+</html>

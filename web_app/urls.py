@@ -31,6 +31,8 @@ urlpatterns = [
     path('form-list', all_seminars, name="full-list"),
     path('generate_report', generate_report, name="generate_report"),
     path('form-list/delete_seminar/<int:seminar_id>/', delete_seminar, name='delete_seminar'),
+    path("form-list/delete_all_seminars/", delete_all_seminars, name="delete_all_seminars")
+
 ]+ static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)
 

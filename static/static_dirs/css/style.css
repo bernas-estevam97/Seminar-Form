@@ -28,7 +28,7 @@ body {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
     padding: 1rem 2rem;
-    border-radius: 15px;
+    border-radius: 5px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     color: white;
     margin-bottom: 2rem;
@@ -60,7 +60,7 @@ body {
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     padding: 1rem;
-    border-radius: 15px;
+    border-radius: 5px;
     color: white;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     display: flex;
@@ -90,7 +90,7 @@ body {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(15px);
     padding: 2rem;
-    border-radius: 15px;
+    border-radius: 5px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     color: white;
     width: 100%;
@@ -203,6 +203,11 @@ a.btn-success:hover {
 
 .btn-close {
     filter: invert(1);
+}
+
+#deleteAllEntries{
+    font-size: 1em !important;
+    padding: 5px 10px !important;
 }
 
 @keyframes fadeIn {

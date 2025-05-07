@@ -18,6 +18,8 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
+from django.views.decorators.http import require_POST
+import re
 
 @login_required(login_url=settings.LOGIN_URL)
 def home_page(request):
@@ -122,11 +124,24 @@ def all_seminars(request):
 
 
 
-@csrf_exempt  # Disable CSRF protection for simplicity; consider using CSRF tokens instead
+@require_POST
+@login_required
 def delete_seminar(request, seminar_id):
-    if request.method == "POST":
-        seminar = get_object_or_404(SeminarFormModel, id=seminar_id)
-        seminar.delete()
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        try:
+            seminar = SeminarFormModel.objects.get(id=seminar_id)
+            seminar.delete()
+            return JsonResponse({"success": True})
+        except SeminarFormModel.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Seminar not found"}, status=404)
+    return JsonResponse({"success": False, "error": "Invalid request"}, status=400)
+
+
+@require_POST
+@login_required
+def delete_all_seminars(request):
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        SeminarFormModel.objects.all().delete()
         return JsonResponse({"success": True})
     return JsonResponse({"success": False}, status=400)
 
@@ -137,7 +152,7 @@ def delete_seminar(request, seminar_id):
     #    return JsonResponse({"success": True})
     #return JsonResponse({"success": False}, status=400)
 
-
+@login_required
 def generate_report(request):
      data = SeminarFormModel.objects.filter(user=request.user)
      current_date = date.today()
@@ -148,10 +163,12 @@ def generate_report(request):
           'current_date_pt': current_date_pt,
           'user': username
      }
-     template = get_template('report_template.html')
+     template = get_template('report_template_pt.html')
      html = template.render(context)
      response = HttpResponse(content_type='application/pdf')
-     response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+     safe_firstname = re.sub(r'\W+', '_', request.user.first_name)
+     safe_lastname = re.sub(r'\W+', '_', request.user.last_name)
+     response['Content-Disposition'] = f'attachment; filename="report_{safe_firstname}_{safe_lastname}.pdf"'
      pisa_status = pisa.CreatePDF(html, dest=response)
      if len(data) != 0:
      

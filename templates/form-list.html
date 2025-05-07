@@ -62,7 +62,7 @@
         </table>
       </div>
 
-      <a href="{% url 'home' %}" class="btn btn-info">Submit a new seminar</a><br /><br />
+      <a href="{% url 'home' %}" class="btn btn-info">Submit a new seminar</a>&nbsp;&nbsp;&nbsp;<button id="deleteAllEntries" class="btn btn-danger btn-sm">Delete All</button><br><br>
 
       <form action="{% url 'generate_report' %}" method="GET">
         <button type="submit" class="btn btn-success">Generate report for {{ user.get_username }}</button>
@@ -114,6 +114,43 @@
           });
         });
       });
+
+
+            // DELETE ALL SEMINARS WITH  
+
+            document.getElementById("deleteAllEntries").addEventListener("click", function () {
+    const tbody = document.querySelector("table tbody");
+    const rows = tbody.querySelectorAll("tr");
+
+    if (rows.length === 0) {
+        alert("There are no seminars to delete.");
+        return;
+    }
+
+    const confirmed = confirm("Are you sure you want to delete ALL seminars? This action cannot be undone.");
+    if (!confirmed) return;
+
+    fetch("form-list/delete_all_seminars/", {
+        method: "POST",
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+            "X-CSRFToken": getCookie("csrftoken")
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            rows.forEach(row => row.remove());
+            alert("All seminars have been deleted.");
+        } else {
+            alert("Error deleting seminars.");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Something went wrong.");
+    });
+});
 
       function getCookie(name) {
         let cookieValue = null;
