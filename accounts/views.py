@@ -85,7 +85,8 @@ def auth_view(request):
             toggle = 'signup'
 
             if signup_form.is_valid():
-                full_name = signup_form.cleaned_data['full_name']
+                first_name = signup_form.cleaned_data['first_name']
+                last_name = signup_form.cleaned_data['last_name']
                 username = signup_form.cleaned_data['username']
                 password = signup_form.cleaned_data['password']
 
@@ -93,7 +94,8 @@ def auth_view(request):
                     messages.error(request, "Username already exists. Please choose a different one.")
                 else:
                     user = User.objects.create_user(username=username, password=password)
-                    user.first_name = full_name
+                    user.first_name = first_name
+                    user.last_name = last_name
                     user.save()
 
                     user = authenticate(request, username=username, password=password)

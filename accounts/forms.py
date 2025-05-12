@@ -20,13 +20,22 @@ class LoginForm(forms.Form):
     )
 
 class RegisterForm(forms.Form):
-    full_name = forms.CharField(
+    first_name = forms.CharField(
         max_length=200,
         widget=forms.TextInput(attrs={
-            'placeholder': 'Full Name',
+            'placeholder': 'First Name',
             'id': 'name',
             'onfocus': "this.placeholder=''",
-            'onblur': "this.placeholder='Full Name'"
+            'onblur': "this.placeholder='First Name'"
+        })
+    )
+    last_name = forms.CharField(
+        max_length=200,
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Last Name',
+            'id': 'name',
+            'onfocus': "this.placeholder=''",
+            'onblur': "this.placeholder='Last Name'"
         })
     )
     username = forms.CharField(

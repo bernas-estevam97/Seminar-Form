@@ -20,6 +20,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from django.views.decorators.http import require_POST
 import re
+import requests
 
 @login_required(login_url=settings.LOGIN_URL)
 def home_page(request):
@@ -29,34 +30,90 @@ def home_page(request):
      return render(request, 'index.html', {'form': form, 'data': data, 'main_page': main_page})
 
 @login_required(login_url=settings.LOGIN_URL)
+# def seminar_form_req(request):
+#      submitted=False
+#      if request.method=='POST':
+#           form = SeminarForm(request.POST)
+#           if form.is_valid():
+#                title = form.cleaned_data['seminar_title']
+#                speaker = form.cleaned_data['seminar_speaker']
+#                date = form.cleaned_data['seminar_date']
+
+#                seminar_reg = SeminarFormModel.objects.create(
+#                     user = request.user,
+#                     seminar_title = title,
+#                     seminar_speaker = speaker,
+#                     seminar_date = date
+#                )
+
+#                seminar_reg.save()
+#                # return render(request, "success.html", {'form': form, 'data': data})
+#                return HttpResponseRedirect('/add-form?submitted=True')
+#           # else:   
+#           #      form = SeminarForm()
+#           #      message = 'Something went wrong with the submission. Try again.'
+#           #      return render(request, 'index.html', {'form': form, 'message': message})
+#      else:
+#           form = SeminarForm()
+#           if 'submitted' in request.GET:
+#                submitted = True
+#      return render(request, 'index.html', {'form': form, 'submitted': submitted})
+
 def seminar_form_req(request):
-     submitted=False
-     if request.method=='POST':
-          form = SeminarForm(request.POST)
-          if form.is_valid():
-               title = form.cleaned_data['seminar_title']
-               speaker = form.cleaned_data['seminar_speaker']
-               date = form.cleaned_data['seminar_date']
+    if request.method == 'POST':
+        form = SeminarForm(request.POST)
+        recaptcha_token = request.POST.get('recaptcha_token')
 
-               seminar_reg = SeminarFormModel.objects.create(
-                    user = request.user,
-                    seminar_title = title,
-                    seminar_speaker = speaker,
-                    seminar_date = date
-               )
+        # Verify reCAPTCHA token with Google's API
+        secret_key = settings.RECAPTCHA_PRIVATE_KEY  # Store your private key in settings.py
+        recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify'
+        recaptcha_data = {
+            'secret': secret_key,
+            'response': recaptcha_token,
+        }
+        recaptcha_response = requests.post(recaptcha_url, data=recaptcha_data)
+        recaptcha_result = recaptcha_response.json()
 
-               seminar_reg.save()
-               # return render(request, "success.html", {'form': form, 'data': data})
-               return HttpResponseRedirect('/add-form?submitted=True')
-          # else:   
-          #      form = SeminarForm()
-          #      message = 'Something went wrong with the submission. Try again.'
-          #      return render(request, 'index.html', {'form': form, 'message': message})
-     else:
-          form = SeminarForm()
-          if 'submitted' in request.GET:
-               submitted = True
-     return render(request, 'index.html', {'form': form, 'submitted': submitted})
+        # If reCAPTCHA verification fails, show an error message
+        if not recaptcha_result.get('success'):
+            messages.error(request, 'reCAPTCHA verification failed. Please try again.')
+            return render(request, 'index.html', {'form': form})
+        
+        # Check the reCAPTCHA score
+        score = recaptcha_result.get('score', 0)
+        if score < settings.RECAPTCHA_REQUIRED_SCORE:
+            messages.error(request, f"reCAPTCHA score of {score} is too low. Please try again.")
+            return render(request, 'index.html', {'form': form})
+        
+        # If reCAPTCHA is successful, process the form
+        if form.is_valid():
+            title = form.cleaned_data['seminar_title']
+            speaker = form.cleaned_data['seminar_speaker']
+            date = form.cleaned_data['seminar_date']
+
+            seminar_reg = SeminarFormModel.objects.create(
+                user=request.user,
+                seminar_title=title,
+                seminar_speaker=speaker,
+                seminar_date=date
+            )
+            seminar_reg.save()
+
+            # Success message after successful form submission
+            messages.success(request, 'Your seminar form was submitted successfully!')
+            return redirect('home')  # Redirect to the same form page after success
+        
+        # If form is invalid, show an error message
+        else:
+            messages.error(request, 'There were errors with the form submission.')
+
+    else:
+        form = SeminarForm()
+
+    return render(request, 'index.html', {'form': form})
+
+
+
 
 def all_seminars(request):
      data = SeminarFormModel.objects.filter(user=request.user)
