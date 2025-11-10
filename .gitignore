@@ -4,3 +4,7 @@ staticfiles/
 .prettierignore
 .env
 dbbk.sqlite3
+
+# Ignore Python cache
+__pycache__/
+*.py[cod]
